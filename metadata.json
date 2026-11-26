@@ -1,0 +1,6 @@
+{
+  "name": "Micro-Wind Turbine Site Auditor",
+  "description": "Physics-Based Wind vs. Solar BS Detector for India using 8,760 hours of real wind & solar telemetry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

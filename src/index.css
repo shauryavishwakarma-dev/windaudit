@@ -1,0 +1,566 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-display: "Syne", sans-serif;
+  --font-editorial: "Anton", sans-serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Leaflet Container & Architectural Control Styling */
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid #d4d4ce !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.dark .leaflet-control-zoom {
+  border-color: #22252a !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: rgba(244, 244, 240, 0.94) !important;
+  color: #111214 !important;
+  border-bottom-color: #d4d4ce !important;
+  border-radius: 0 !important;
+  font-family: var(--font-mono);
+  font-weight: bold !important;
+}
+
+.dark .leaflet-control-zoom a {
+  background-color: rgba(10, 11, 13, 0.92) !important;
+  color: #f3f4f6 !important;
+  border-bottom-color: #22252a !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #0f62fe !important;
+  color: #ffffff !important;
+}
+
+.dark .leaflet-control-zoom a:hover {
+  background-color: #0ea5e9 !important;
+  color: #020617 !important;
+}
+
+@layer base {
+  :root {
+    --bg-canvas: #cbe7fa;
+    --bg-alt: #b8ddf7;
+    --bento-surface: rgba(240, 249, 255, 0.84);
+    --bento-border: #7dd3fc;
+    --aero-accent: #0284c7;
+    --verdict-go: #059669;
+    --verdict-marginal: #0284c7;
+    --verdict-nogo: #dc2626;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  html.dark {
+    --bg-canvas: #0a0b0d;
+    --bg-alt: #0d0f13;
+    --bento-surface: #101216;
+    --bento-border: #22252a;
+    --aero-accent: #38bdf8;
+    --verdict-go: #10b981;
+    --verdict-marginal: #f59e0b;
+    --verdict-nogo: #ef4444;
+  }
+
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-editorial {
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+}
+
+.font-mono-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* AeroCheck Architectural Canvas & Panels */
+.ambient-canvas {
+  background-color: #cbe7fa;
+  background-image:
+    radial-gradient(ellipse 85% 45% at 50% 0%, rgba(125, 211, 252, 0.55), transparent 70%),
+    linear-gradient(180deg, #d7eefc 0%, #c6e5f9 50%, #d2ecfc 100%);
+  color: #0c1b2a;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.dark .ambient-canvas {
+  background-color: #0a0b0d;
+  background-image: none;
+  color: #f3f4f6;
+}
+
+.bento-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(224, 242, 254, 0.52));
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgba(125, 211, 252, 0.65);
+  border-radius: 0px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 6px 24px -6px rgba(14, 165, 233, 0.12) !important;
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.dark .bento-card {
+  background: #101216;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid #22252a;
+  box-shadow: none !important;
+}
+
+.bento-card:hover {
+  border-color: #0284c7;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 28px -6px rgba(2, 132, 199, 0.18) !important;
+}
+
+.dark .bento-card:hover {
+  border-color: #38bdf8;
+  box-shadow: none !important;
+}
+
+.hud-dock-surface {
+  background: rgba(240, 249, 255, 0.82);
+  backdrop-filter: blur(18px) saturate(165%);
+  -webkit-backdrop-filter: blur(18px) saturate(165%);
+  border: 1px solid rgba(125, 211, 252, 0.72);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 8px 30px rgba(14, 165, 233, 0.14);
+  border-radius: 0px !important;
+  will-change: transform, opacity;
+  transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease;
+}
+
+.dark .hud-dock-surface {
+  background: rgba(10, 11, 13, 0.92);
+  border: 1px solid #22252a;
+  box-shadow: none;
+}
+
+/* AeroCheck Precision Sliders (square glowing accent thumb + thick track) */
+input[type="range"].aero-slider,
+input[type="range"].telemetry-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+  height: 24px;
+  outline: none;
+}
+
+input[type="range"].aero-slider::-webkit-slider-runnable-track,
+input[type="range"].telemetry-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: linear-gradient(
+    to right,
+    #0f62fe 0%,
+    #0f62fe var(--slider-pct, 50%),
+    #d4d4ce var(--slider-pct, 50%),
+    #d4d4ce 100%
+  );
+  border: 1px solid #c6c6bf;
+}
+
+.dark input[type="range"].aero-slider::-webkit-slider-runnable-track,
+.dark input[type="range"].telemetry-slider::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    #0ea5e9 0%,
+    #0ea5e9 var(--slider-pct, 50%),
+    #1e2128 var(--slider-pct, 50%),
+    #1e2128 100%
+  );
+  border: 1px solid #2b2f38;
+}
+
+input[type="range"].aero-slider::-webkit-slider-thumb,
+input[type="range"].telemetry-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  background: #0f62fe;
+  border: 2px solid #f4f4f0;
+  border-radius: 0px;
+  box-shadow: 0 0 0 2px rgba(15, 98, 254, 0.25), 0 0 12px rgba(15, 98, 254, 0.45);
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease;
+}
+
+.dark input[type="range"].aero-slider::-webkit-slider-thumb,
+.dark input[type="range"].telemetry-slider::-webkit-slider-thumb {
+  background: #38bdf8;
+  border: 2px solid #0a0b0d;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.24), 0 0 14px rgba(14, 165, 233, 0.55);
+}
+
+input[type="range"].aero-slider:hover::-webkit-slider-thumb,
+input[type="range"].telemetry-slider:hover::-webkit-slider-thumb {
+  transform: scale(1.16);
+}
+
+input[type="range"].aero-slider::-moz-range-track,
+input[type="range"].telemetry-slider::-moz-range-track {
+  height: 6px;
+  background: #d4d4ce;
+  border: 1px solid #c6c6bf;
+}
+
+.dark input[type="range"].aero-slider::-moz-range-track,
+.dark input[type="range"].telemetry-slider::-moz-range-track {
+  background: #1e2128;
+  border: 1px solid #2b2f38;
+}
+
+input[type="range"].aero-slider::-moz-range-progress,
+input[type="range"].telemetry-slider::-moz-range-progress {
+  height: 6px;
+  background: #0f62fe;
+}
+
+.dark input[type="range"].aero-slider::-moz-range-progress,
+.dark input[type="range"].telemetry-slider::-moz-range-progress {
+  background: #38bdf8;
+}
+
+input[type="range"].aero-slider::-moz-range-thumb,
+input[type="range"].telemetry-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #0f62fe;
+  border: 2px solid #f4f4f0;
+  border-radius: 0px;
+  box-shadow: 0 0 12px rgba(15, 98, 254, 0.5);
+}
+
+.dark input[type="range"].aero-slider::-moz-range-thumb,
+.dark input[type="range"].telemetry-slider::-moz-range-thumb {
+  background: #38bdf8;
+  border: 2px solid #0a0b0d;
+  box-shadow: 0 0 14px rgba(14, 165, 233, 0.6);
+}
+
+/* Architectural harmonization across secondary panels */
+.aero-adaptive-surface .rounded-3xl,
+.aero-adaptive-surface .rounded-2xl,
+.aero-adaptive-surface .rounded-xl,
+.aero-adaptive-surface .rounded-lg {
+  border-radius: 0px !important;
+}
+
+.dark .aero-adaptive-surface .bento-card {
+  background: #101216 !important;
+  border-color: #22252a !important;
+  box-shadow: none !important;
+}
+
+.dark .aero-adaptive-surface .bg-white,
+.dark .aero-adaptive-surface .bg-white\/95,
+.dark .aero-adaptive-surface .bg-white\/85,
+.dark .aero-adaptive-surface .bg-white\/80,
+.dark .aero-adaptive-surface .bg-slate-50,
+.dark .aero-adaptive-surface .bg-slate-50\/90,
+.dark .aero-adaptive-surface .bg-slate-50\/80,
+.dark .aero-adaptive-surface .bg-slate-50\/70,
+.dark .aero-adaptive-surface .bg-slate-50\/60,
+.dark .aero-adaptive-surface .bg-slate-50\/50 {
+  background-color: #0d0f13 !important;
+}
+
+.dark .aero-adaptive-surface .bg-slate-100,
+.dark .aero-adaptive-surface .bg-slate-100\/90,
+.dark .aero-adaptive-surface .bg-slate-100\/80,
+.dark .aero-adaptive-surface .bg-slate-200,
+.dark .aero-adaptive-surface .bg-slate-200\/80 {
+  background-color: #161920 !important;
+}
+
+.dark .aero-adaptive-surface .border-slate-200,
+.dark .aero-adaptive-surface .border-slate-200\/90,
+.dark .aero-adaptive-surface .border-slate-200\/80,
+.dark .aero-adaptive-surface .border-slate-200\/75,
+.dark .aero-adaptive-surface .border-slate-200\/70,
+.dark .aero-adaptive-surface .border-slate-100,
+.dark .aero-adaptive-surface .border-slate-300 {
+  border-color: #22252a !important;
+}
+
+.dark .aero-adaptive-surface .text-slate-950,
+.dark .aero-adaptive-surface .text-slate-900,
+.dark .aero-adaptive-surface .text-slate-800 {
+  color: #f3f4f6 !important;
+}
+
+.dark .aero-adaptive-surface .text-slate-700,
+.dark .aero-adaptive-surface .text-slate-600 {
+  color: #b4bac5 !important;
+}
+
+.dark .aero-adaptive-surface .text-slate-500,
+.dark .aero-adaptive-surface .text-slate-400 {
+  color: #8e94a0 !important;
+}
+
+.dark .aero-adaptive-surface [class*="text-cyan-"],
+.dark .aero-adaptive-surface [class*="text-teal-"] {
+  color: #38bdf8 !important;
+}
+
+.dark .aero-adaptive-surface [class*="text-indigo-"] {
+  color: #93c5fd !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-cyan-50"],
+.dark .aero-adaptive-surface [class*="bg-cyan-100"],
+.dark .aero-adaptive-surface [class*="bg-teal-50"],
+.dark .aero-adaptive-surface [class*="bg-teal-100"] {
+  background-color: rgba(56, 189, 248, 0.1) !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-indigo-50"],
+.dark .aero-adaptive-surface [class*="bg-indigo-100"] {
+  background-color: rgba(96, 165, 250, 0.1) !important;
+}
+
+/* Primary CTAs across adaptive sub-panels harmonize to Cobalt Blue (Light) / Electric Volt (Dark) */
+.aero-adaptive-surface .bg-cyan-600,
+.aero-adaptive-surface .bg-teal-600,
+.aero-adaptive-surface .bg-amber-600,
+.aero-adaptive-surface .bg-indigo-600 {
+  background-color: #0f62fe !important;
+  color: #ffffff !important;
+  border-color: #0f62fe !important;
+}
+
+.dark .aero-adaptive-surface .bg-cyan-600,
+.dark .aero-adaptive-surface .bg-teal-600,
+.dark .aero-adaptive-surface .bg-amber-600,
+.dark .aero-adaptive-surface .bg-indigo-600 {
+  background-color: #38bdf8 !important;
+  color: #0a0b0d !important;
+  border-color: #0ea5e9 !important;
+}
+
+.dark .aero-adaptive-surface [class*="border-cyan-"],
+.dark .aero-adaptive-surface [class*="border-teal-"] {
+  border-color: rgba(56, 189, 248, 0.35) !important;
+}
+
+.dark .aero-adaptive-surface [class*="border-indigo-"] {
+  border-color: rgba(96, 165, 250, 0.38) !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-gradient-to-br"],
+.dark .aero-adaptive-surface [class*="bg-gradient-to-b"] {
+  background-image: none !important;
+  background-color: #101216 !important;
+}
+
+.dark .aero-adaptive-surface [class*="border-amber-200"] {
+  border-color: #22252a !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-amber-50"],
+.dark .aero-adaptive-surface [class*="bg-amber-100"] {
+  background-color: rgba(16, 185, 129, 0.08) !important;
+}
+
+.dark .aero-adaptive-surface [class*="text-amber-"] {
+  color: #34d399 !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-emerald-50"],
+.dark .aero-adaptive-surface [class*="bg-emerald-100"] {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+}
+
+.dark .aero-adaptive-surface [class*="border-emerald-200"],
+.dark .aero-adaptive-surface [class*="border-emerald-300"] {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+.dark .aero-adaptive-surface [class*="bg-rose-50"],
+.dark .aero-adaptive-surface [class*="bg-rose-100"] {
+  background-color: rgba(239, 68, 68, 0.09) !important;
+}
+
+.dark .aero-adaptive-surface [class*="border-rose-200"],
+.dark .aero-adaptive-surface [class*="border-rose-300"] {
+  border-color: rgba(239, 68, 68, 0.35) !important;
+}
+
+.dark .aero-adaptive-surface [class*="text-rose-"] {
+  color: #fda4af !important;
+}
+
+.dark .aero-adaptive-surface .text-emerald-700,
+.dark .aero-adaptive-surface .text-emerald-800 {
+  color: #34d399 !important;
+}
+
+.dark .aero-adaptive-surface .bg-slate-900 {
+  background-color: #38bdf8 !important;
+  color: #0a0b0d !important;
+}
+
+.dark .aero-adaptive-surface .bg-slate-900 .text-cyan-300,
+.dark .aero-adaptive-surface .bg-slate-900 .text-cyan-400,
+.dark .aero-adaptive-surface .bg-slate-900 svg {
+  color: #0a0b0d !important;
+}
+
+.igloo-btn {
+  transition: opacity 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+/* Radar & 3D Spatial Map Utilities */
+@keyframes spatialRadarWave {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.radar-wave-active {
+  animation: spatialRadarWave 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+@keyframes slowOrbitPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(15, 98, 254, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(15, 98, 254, 0.55);
+  }
+}
+
+.dark .orbit-glow-active {
+  box-shadow: 0 0 14px 2px rgba(56, 189, 248, 0.45);
+}
+
+.orbit-glow-active {
+  animation: slowOrbitPulse 2.5s ease-in-out infinite;
+}
+
+/* Preserve 3D context for Leaflet layers when 3D tilt is active */
+.leaflet-3d-stage {
+  transform-style: preserve-3d !important;
+}
+.leaflet-3d-stage .leaflet-pane,
+.leaflet-3d-stage .leaflet-map-pane,
+.leaflet-3d-stage .leaflet-marker-pane,
+.leaflet-3d-stage .leaflet-marker-icon {
+  transform-style: preserve-3d !important;
+}
+
+.leaflet-control-attribution {
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  padding: 2px 6px !important;
+  background: rgba(244, 244, 240, 0.85) !important;
+  color: #52565e !important;
+  border-top: 1px solid #d4d4ce !important;
+  border-left: 1px solid #d4d4ce !important;
+}
+
+.dark .leaflet-control-attribution {
+  background: rgba(10, 11, 13, 0.82) !important;
+  color: #94a3b8 !important;
+  border-top: 1px solid #22252a !important;
+  border-left: 1px solid #22252a !important;
+}
+
+.leaflet-control-attribution a {
+  color: inherit !important;
+}
+
+/* Dedicated formal engineering print stylesheet for PDF export */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  body, .ambient-canvas {
+    background: #ffffff !important;
+    color: #111214 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .bento-card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+  }
+}
